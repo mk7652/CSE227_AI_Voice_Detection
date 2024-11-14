@@ -1,6 +1,7 @@
 #Essential module import
 
 import praatio
+import praatio.audio
 from src.Charsiu import charsiu_chain_attention_aligner, charsiu_forced_aligner, charsiu_attention_aligner
 import os
 import sys
@@ -49,7 +50,7 @@ def generate_alignments(path: str, audios: list[str], transcripts: list[str]) ->
     return alignments
 
 def filter_fricatives(alignments: list[tuple]) -> list[tuple]:
-    fricatives = set(['F', 'Z', 'V', 'S'])
+    fricatives = set(['F', 'Z', 'V', 'S', 'DH'])
     fricative_timestamps = []
     for alignment in alignments:
         filtered = [f for f in alignment if f[-1] in fricatives]
@@ -80,7 +81,7 @@ def generate_subwaves(path: str, audios: list[str], fricative_timestamps: list[t
 
                 start, end = fricative[0], fricative[1]
                 phoneme = fricative[-1]
-
+                
                 time_axis = torch.arange(start * sample_rate, end * sample_rate) / sample_rate
                 subwave = waveform[:, int(start * sample_rate):int(end * sample_rate)] 
                 figure, axes = plt.subplots(num_channels, 1)
@@ -93,6 +94,10 @@ def generate_subwaves(path: str, audios: list[str], fricative_timestamps: list[t
                 figure.suptitle(f"{audio_name}_{phoneme}_{ind}_Waveform")
                 figure.savefig(target_dir + f"{audio_name}_{phoneme}_{ind}_Waveform.png")
                 plt.close(figure)
+                
+                praatio.audio.extractSubwav(fn=path + audio, 
+                                            outputFN=target_dir + f"{audio_name}_{phoneme}_{ind}_Waveform.wav",
+                                            startTime=start, endTime=end)
 
 
 if __name__ == "__main__":
