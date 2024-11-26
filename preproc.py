@@ -84,7 +84,7 @@ def generate_subwaves(path: str, audios: list[str], fricative_timestamps: list[t
                 
                 time_axis = torch.arange(start * sample_rate, end * sample_rate) / sample_rate
                 subwave = waveform[:, int(start * sample_rate):int(end * sample_rate)] 
-                figure, axes = plt.subplots(num_channels, 1)
+                figure, axes = plt.subplots(num_channels, 1, figsize=(20, 5))
 
                 axes = [axes]
                 axes[0].plot(tensor_generator(time_axis), subwave[0], linewidth=1)
