@@ -99,7 +99,6 @@ def generate_subwaves(path: str, audios: list[str], fricative_timestamps: list[t
                                             outputFN=target_dir + f"{audio_name}_{phoneme}_{ind}_Waveform.wav",
                                             startTime=start, endTime=end)
 
-
 if __name__ == "__main__":
     
     wav_path = "../sample_data/original/"
