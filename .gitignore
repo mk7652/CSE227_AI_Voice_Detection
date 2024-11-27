@@ -162,4 +162,6 @@ charsiu/pre_proc.ipynb
 
 #Executables
 Praat.exe
-sample_data/*
+sample_data
+raw_data
+data
